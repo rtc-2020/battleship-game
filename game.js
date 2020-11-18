@@ -225,7 +225,7 @@ function Battleship(ocean,targeting) {
 
 };
 
-var g = new Battleship('#player-one .ocean','#player-one .targeting');
+var g = new Battleship('.ocean','.targeting');
 
 
 
