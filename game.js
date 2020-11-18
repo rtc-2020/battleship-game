@@ -220,7 +220,7 @@ function Battleship(ocean,targeting) {
     li.dataset.coordinates = coordinates;
     targeting.appendChild(li);
     // TODO: Add some kind of message console to the game board.
-    console.log("Incoming message:", message);
+    document.querySelector('#targeting-console').innerText = message;
   });
 
 };

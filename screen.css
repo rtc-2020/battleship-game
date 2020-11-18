@@ -16,7 +16,9 @@ ol {
   grid-template-columns: repeat(10,3vw);
   grid-template-rows: repeat(10,3vw);
   grid-gap: 2px;
-  padding-bottom: 3vw;
+}
+.ocean {
+  padding-top: 3vw;
 }
 .targeting > li {
   background-color: #0C0;
@@ -24,6 +26,18 @@ ol {
 .ocean > li {
   background-color: #06F;
   z-index: 0;
+}
+#targeting-console {
+  font-family: Monaco, "Courier New", Courier, monospace;
+  margin-top: 2px;
+  padding: 3px;
+  font-weight: bold;
+  background: #050;
+  color: #EEE;
+  display: inline-block;
+}
+#targeting-console::before {
+  content: "> "
 }
 /*
   To have ships overlap ocean, it looks
