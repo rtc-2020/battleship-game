@@ -11,21 +11,26 @@ html {
   padding: 24px;
 }
 
-ol {
+#game-board ol {
   display: grid;
-  grid-template-columns: repeat(10,3vw);
-  grid-template-rows: repeat(10,3vw);
+  grid-template-columns: repeat(10,1fr);
+  grid-template-rows: repeat(10,1fr);
   grid-gap: 2px;
+}
+#game-board {
+  background: #DDD;
 }
 .ocean {
   padding-top: 3vw;
 }
 .targeting > li {
   background-color: #0C0;
+  padding-top: 100%; /* Hack to get fully responsive squares */
 }
 .ocean > li {
   background-color: #06F;
   z-index: 0;
+  padding-top: 100%;
 }
 #targeting-console {
   font-family: Monaco, "Courier New", Courier, monospace;
@@ -111,6 +116,7 @@ li.hit {
   border-radius: 100%;
   margin: .7vw;
   background-color: white;
+  padding-top: 0;
 }
 li.hit {
   background-color: red;
@@ -120,6 +126,7 @@ li[class^="ship-"] {
   background-color: #777;
   border: .5vw solid #444;
   z-index: 2;
+  padding-top: 0;
 }
 
 /* Make our boats boat-shaped! */
