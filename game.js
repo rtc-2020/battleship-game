@@ -181,8 +181,8 @@ function Battleship(ocean,targeting) {
   // Clicking on the targeting grid triggers a fire event
   targeting.addEventListener('click', function(e) {
     var coordinates = e.target.dataset.coordinates;
-    // Don't do anything if the coordinates have already been targeted
-    if (targeted.indexOf(coordinates) !== -1) {
+    // Don't do anything if the coordinates have already been targeted, or if the gap was clicked on
+    if (targeted.indexOf(coordinates) !== -1 || coordinates === undefined) {
       return;
     }
     targeted.push(coordinates);
