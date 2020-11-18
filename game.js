@@ -42,6 +42,8 @@ function Battleship(ocean,targeting) {
 
   // Array to hold all coordinates occupied by ships
   var targets = [];
+  // Array to hold all targeted coordinates, whether hit or miss
+  var targeted = [];
 
   // Utility function to generate a random [x,y] origin array
   function random_origin() {
@@ -174,7 +176,12 @@ function Battleship(ocean,targeting) {
   // Clicking on the targeting grid triggers a fire event
   targeting.addEventListener('click', function(e) {
     var coordinates = e.target.dataset.coordinates;
-    // TODO: Disallow firing on a coordinate that's already been fired upon
+    // Don't do anything if the coordinates have already been targeted
+    if (targeted.indexOf(coordinates) !== -1) {
+      return;
+    }
+    targeted.push(coordinates);
+    targeted.sort();
     var event = new CustomEvent('fire', { detail: { action: 'fire', coordinates: coordinates } });
     console.log("Clicked on coordinates", );
     ocean.dispatchEvent(event);
