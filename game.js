@@ -116,6 +116,25 @@ function Battleship(ocean,targeting) {
     }
   }
 
+  // Track damage to ships
+  function track_damage(ships,coordinates) {
+    for (var ship in ships) {
+      if (ships[ship].position.indexOf(coordinates) !== -1) {
+        // Add the damage of coordinate
+        ships[ship].damage.push(coordinates);
+        ships[ship].damage.sort();
+        console.log(ships[ship]);
+
+        // TODO: handle a ship being sunk (damage and position coordinates match)
+        // Could possibly even leverage the return statement to return a sunk message
+        // to add to the 'report' payload.
+
+        // Get out as soon as there's a match
+        return;
+      }
+    }
+  }
+
   // Wrapper function to place all of the ships in the ships object
   function place_ships(ships) {
     for (var ship in ships) {
@@ -150,6 +169,43 @@ function Battleship(ocean,targeting) {
   console.log('Ships:', ships);
   // And display them on the ocean grid
   display_ships(ocean, ships);
+
+  // Events and event listeners
+  // Clicking on the targeting grid triggers a fire event
+  targeting.addEventListener('click', function(e) {
+    var coordinates = e.target.dataset.coordinates;
+    // TODO: Disallow firing on a coordinate that's already been fired upon
+    var event = new CustomEvent('fire', { detail: { action: 'fire', coordinates: coordinates } });
+    console.log("Clicked on coordinates", );
+    ocean.dispatchEvent(event);
+  });
+  // Ocean listens for 'fire' events
+  ocean.addEventListener('fire', function(e) {
+    var coordinates = e.detail.coordinates;
+    var result = 'miss';
+    console.log('Heard a fire event at coordinates', coordinates);
+    // Display the hit or miss on the ocean
+    var li = document.createElement('li');
+    if (targets.indexOf(coordinates) !== -1) {
+      result = 'hit';
+      // If there's a hit, we need to track the damage
+      track_damage(ships,coordinates);
+    }
+    li.className = result;
+    li.dataset.coordinates = coordinates;
+    ocean.appendChild(li);
+    var event = new CustomEvent('report', { detail: { action: result, coordinates: coordinates } });
+    targeting.dispatchEvent(event);
+  });
+  // Targeting grid listens for 'report' events
+  targeting.addEventListener('report', function(e) {
+    var result = e.detail.action;
+    var coordinates = e.detail.coordinates;
+    var li = document.createElement('li');
+    li.className = result;
+    li.dataset.coordinates = coordinates;
+    targeting.appendChild(li);
+  });
 
 };
 
