@@ -120,11 +120,16 @@ function Battleship(ocean,targeting) {
 
   // Track damage to ships
   function track_damage(ships,coordinates) {
+    var message = 'Ship struck.';
     for (var ship in ships) {
       if (ships[ship].position.indexOf(coordinates) !== -1) {
         // Add the damage of coordinate
         ships[ship].damage.push(coordinates);
         ships[ship].damage.sort();
+
+        if (ships[ship].position.length === ships[ship].damage.length) {
+          var message = 'You have sunk the ' + ship + '.';
+        }
         console.log(ships[ship]);
 
         // TODO: handle a ship being sunk (damage and position coordinates match)
@@ -132,7 +137,7 @@ function Battleship(ocean,targeting) {
         // to add to the 'report' payload.
 
         // Get out as soon as there's a match
-        return;
+        return message;
       }
     }
   }
@@ -190,28 +195,32 @@ function Battleship(ocean,targeting) {
   ocean.addEventListener('fire', function(e) {
     var coordinates = e.detail.coordinates;
     var result = 'miss';
+    var message = 'Miss.'
     console.log('Heard a fire event at coordinates', coordinates);
     // Display the hit or miss on the ocean
     var li = document.createElement('li');
     if (targets.indexOf(coordinates) !== -1) {
       result = 'hit';
-      // If there's a hit, we need to track the damage
-      track_damage(ships,coordinates);
+      // If there's a hit, we need to track the damage and get the damage message
+      message = track_damage(ships,coordinates);
     }
     li.className = result;
     li.dataset.coordinates = coordinates;
     ocean.appendChild(li);
-    var event = new CustomEvent('report', { detail: { action: result, coordinates: coordinates } });
+    var event = new CustomEvent('report', { detail: { action: result, coordinates: coordinates, message: message } });
     targeting.dispatchEvent(event);
   });
   // Targeting grid listens for 'report' events
   targeting.addEventListener('report', function(e) {
     var result = e.detail.action;
     var coordinates = e.detail.coordinates;
+    var message = e.detail.message;
     var li = document.createElement('li');
     li.className = result;
     li.dataset.coordinates = coordinates;
     targeting.appendChild(li);
+    // TODO: Add some kind of message console to the game board.
+    console.log("Incoming message:", message);
   });
 
 };
